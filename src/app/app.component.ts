@@ -8,27 +8,27 @@ import { AuthService } from './core/services/auth.service'
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [AuthService]
+  // providers: [AuthService]
 })
-export class AppComponent implements OnInit{
-
-  private authService = inject(AuthService);
-
-  constructor(
-
-  ) {
-    this.authService.getData().subscribe((result) => {
-
-      console.log(result, 'seraaa')
-    })
-  }
-
-  ngOnInit(): void {
-    this.getData()
-  }
-
-  getData() {
-    this.authService.getData()
-  }
+export class AppComponent {
+  title = 'ng-menu-dashboard';
+  // private authService = inject(AuthService);
+  //
+  // constructor(
+  //
+  // ) {
+  //   this.authService.getData().subscribe((result) => {
+  //
+  //     console.log(result, 'seraaa')
+  //   })
+  // }
+  //
+  // ngOnInit(): void {
+  //   this.getData()
+  // }
+  //
+  // getData() {
+  //   this.authService.getData()
+  // }
 
 }
