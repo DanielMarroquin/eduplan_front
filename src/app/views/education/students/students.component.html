@@ -1,0 +1,56 @@
+<div class="flex flex-col min-h-screen p-4 bg-gray-50">
+  <h2 class="text-xl font-bold mb-4">Estudiantes</h2>
+
+  <div class="flex justify-between items-center mb-4">
+    <input
+      type="text"
+      placeholder="Buscar por apellido..."
+      class="p-2 border border-gray-300 rounded"
+      (input)="onSearch($event)" />
+
+    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      + Agregar
+    </button>
+  </div>
+  <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+    <thead class="bg-gray-100">
+    <tr>
+      <th class="p-2 border-b">Nombres y Apellidos</th>
+      <th class="p-2 border-b">Dirección</th>
+      <th class="p-2 border-b">Teléfono</th>
+      <th class="p-2 border-b">Email</th>
+      <th class="p-2 border-b">Información Académica</th>
+      <th class="p-2 border-b">Tipo de Documento</th>
+      <th class="p-2 border-b">Documento de Identidad</th>
+      <th class="p-2 border-b">Fecha de Inscripción</th>
+      <th class="p-2 border-b">Fecha de Nacimiento</th>
+      <th class="py-2 px-4 border-b">Acciones</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of filteredRows">
+
+      <td class="p-2 border-b">{{ row.primerNombre }} {{ row.segundoNombre }} {{ row.primerApellido }} {{ row.segundoApellido }}</td>
+      <td class="p-2 border-b">{{ row.direccion }}</td>
+      <td class="p-2 border-b">{{ row.telefono }}</td>
+      <td class="p-2 border-b">{{ row.email }}</td>
+      <td class="p-2 border-b">{{ row.informacionAcademica }}</td>
+      <td class="p-2 border-b">{{ row.tipoDocumento }}</td>
+      <td class="p-2 border-b">{{ row.documentoIdentidad }}</td>
+      <td class="p-2 border-b">{{ row.fechaInscripcion}}</td>
+      <td class="p-2 border-b">{{ row.fechaNacimiento}}</td>
+      <th class="py-2 px-4 border-b">Acciones</th>
+
+      <td class="p-2 border-b flex gap-2">
+        <button class="bg-yellow-500 text-white px-2 py-1 rounded" (click)="updateStudent(row)">
+          <img ngSrc="assets/icons/edit.png" alt="Editar" class="w-4 h-4" fill/>
+        </button>
+        <button class="bg-red-500 text-white px-2 py-1 rounded" (click)="deleteStudent(row)">
+          <img ngSrc="assets/icons/delete.png" alt="Eliminar" class="w-4 h-4" fill/>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

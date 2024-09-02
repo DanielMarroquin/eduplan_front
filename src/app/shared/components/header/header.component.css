@@ -1,0 +1,7 @@
+/* Styles for footer, if needed */
+app-footer {
+  background-color: #f8f9fa; /* Light grey background */
+  color: #343a40; /* Darker text color */
+  padding: 1rem; /* Padding around the footer */
+  text-align: center; /* Center-align text */
+}

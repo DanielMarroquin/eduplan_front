@@ -7,10 +7,15 @@ import { HttpClient} from "@angular/common/http";
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private apiUrl = environment.apiUrl
 
 
-  getData() {
-    return this.http.get('https://fakestoreapi.com/products')
-    // return this.http.get(`${environment.apiUrl}/`)
+
+  signIn(username: string, password: string) {
+    const url = `${this.apiUrl}/auth/sign-in`
+    const body = { username, password }
+    return this.http.post(url, body)
   }
+
+
 }
