@@ -25,6 +25,18 @@ export const routes: Routes = [
       {
         path: 'cursos',
         loadComponent: () => import('./views/education/courses/courses.component').then(m => m.default)
+      },
+      {
+        path: 'evaluaciones',
+        loadComponent: () => import('./views/education/evaluations/evaluations.component').then(m => m.default)
+      },
+      {
+        path: 'docentes',
+        loadComponent: () => import('./views/education/teachers/teachers.component').then(m => m.default)
+      },
+      {
+        path: 'preguntas',
+        loadComponent: () => import('./views/education/questions-answers/questions-answers.component').then(m => m.default)
       }
     ]
   },

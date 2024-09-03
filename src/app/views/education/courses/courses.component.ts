@@ -1,109 +1,128 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgClass, NgForOf, NgOptimizedImage } from "@angular/common";
+import { CoursesService } from "../../../core/services/courses.service";
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [],
+  imports: [
+    NgForOf,
+    NgOptimizedImage,
+    ReactiveFormsModule,
+    NgClass
+  ],
   templateUrl: './courses.component.html',
-  styleUrl: './courses.component.css'
+  styleUrls: ['./courses.component.css']
 })
-export default class CoursesComponent {
+export default class CoursesComponent implements OnInit {
 
   columns = [
-    { name: 'Logo' },
-    { name: 'Nombre del producto' },
+    { name: 'Nombre del curso' },
     { name: 'Descripción' },
-    { name: 'Fecha de Liberación' },
-    { name: 'Fecha de reestructuración' },
+    { name: 'Duración' },
+    { name: 'Objetivos' },
+    { name: 'Responsables' },
+    { name: 'Fecha de inicio' },
+    { name: 'Fecha de fin' },
     { name: 'Acciones' }
   ];
-  rows: any[] = [];
-  filteredRows = [...this.rows];
-  productForm: FormGroup;
+
+  rows: any;
+  filteredRows: any;
+  courseForm: FormGroup;  // Cambio aquí para reflejar el formulario de cursos
+
+  isModalOpen = false;
 
   constructor(
     private fb: FormBuilder,
+    private courseService: CoursesService
   ) {
-    this.productForm = this.fb.group({
-      logo: ['', Validators.required],
-      name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
-      date_release: ['', Validators.required],
-      date_revision: ['', Validators.required]
+    this.courseForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+      duracion: ['', Validators.required],
+      objetivos: ['', Validators.required],
+      responsables: ['', Validators.required],
+      fechaInicio: ['', Validators.required],
+      fechaFin: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
-    this.loadProducts();
+    this.loadCourses();
   }
 
-  openAddModal(): void {
-    // Implement the logic to open your modal for adding a new product
+  openModal(): void {
+    this.isModalOpen = true;
   }
 
-  updateProduct(row: any): void {
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+  updateCourses(row: any): void {
     console.log('Actualizar', row);
-    // Implement your update logic
+    // Implementa tu lógica de actualización
   }
 
-  saveProduct(): void {
-    if (this.productForm.invalid) {
+  saveCourses(): void {
+    if (this.courseForm.invalid) {
       console.error('Formulario inválido');
       return;
     }
 
-    const productId = 'some-unique-id';
-    const newProduct = { id: productId, ...this.productForm.value };
+    const newCourse = { ...this.courseForm.value };
 
-    // this.productService.createProduct(newProduct).subscribe({
-    //   next: () => {
-    //     Swal.fire('Producto Creado', 'El producto ha sido creado exitosamente.', 'success').then(() => {
-    //       this.loadProducts();
-    //     });
-    //   },
-    //   error: () => {
-    //     Swal.fire('Error', 'Hubo un problema al crear el producto. Por favor, intenta de nuevo.', 'error');
-    //   }
-    // });
+    this.courseService.create(newCourse).subscribe({
+      next: () => {
+        console.log('Curso creado exitosamente');
+        this.closeModal();
+        this.loadCourses();  // Recarga la lista de cursos después de guardar
+      },
+      error: () => {
+        console.error('Hubo un problema al crear el curso');
+      }
+    });
   }
 
-  deleteProduct(row: any): void {
-    // Swal.fire({
-    //   title: `¿Estás seguro de eliminar ${row.name}?`,
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonText: 'Sí',
-    //   cancelButtonText: 'No, gracias'
-    // }).then((result) => {
-      // if (result.isConfirmed) {
-      //   this.productService.deleteProduct(row.id).subscribe({
-      //     next: () => {
-      //       this.rows = this.rows.filter(product => product.id !== row.id);
-      //       this.filteredRows = [...this.rows];
-      //       Swal.fire('Eliminado', `${row.name} ha sido eliminado.`, 'success');
-      //     },
-      //     error: () => {
-      //       Swal.fire('Error', 'Hubo un problema al eliminar el producto. Por favor, intenta de nuevo.', 'error');
-      //     }
-      //   });
-      // }
-    //});
+  deleteCourse(row: any): void {
+    Swal.fire({
+      title: `¿Estás seguro de eliminar el curso ${row.nombre}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'No, gracias'
+    }).then((result: { isConfirmed: any; }) => {
+      if (result.isConfirmed) {
+        this.courseService.delete(row.id).subscribe({
+          next: () => {
+            this.rows = this.rows.filter((course: any) => course.id !== row.id);
+            this.filteredRows = [...this.rows];
+            Swal.fire('Eliminado', `El curso ${row.nombre} ha sido eliminado.`, 'success');
+          },
+          error: () => {
+            Swal.fire('Error', 'Hubo un problema al eliminar el curso. Por favor, intenta de nuevo.', 'error');
+          }
+        });
+      }
+    });
   }
+
 
   onSearch(event: any): void {
     const searchTerm = event.target.value.toLowerCase();
-    this.filteredRows = this.rows.filter(row =>
-      row.name && row.name.toLowerCase().includes(searchTerm)
+    this.filteredRows = this.rows.filter((row: { nombre: string }) =>
+      row.nombre && row.nombre.toLowerCase().includes(searchTerm)
     );
   }
 
-  loadProducts(): void {
-    // this.productService.getAllProducts().subscribe(response => {
-    //   this.rows = response.data;
-    //   this.filteredRows = [...this.rows];
-    // });
+  loadCourses(): void {
+    this.courseService.findAllCourses().subscribe(response => {
+      this.rows = response;
+      this.filteredRows = [...this.rows];
+    });
   }
-
-
 }

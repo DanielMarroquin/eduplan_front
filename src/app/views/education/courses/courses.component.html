@@ -1,1 +1,97 @@
-<p>courses works!</p>
+<div class="flex flex-col min-h-screen p-4 bg-gray-50">
+  <h2 class="text-xl font-bold mb-4">Cursos</h2>
+
+  <div class="flex justify-between items-center mb-4">
+    <input
+      type="text"
+      placeholder="Buscar por nombre..."
+      class="p-2 border border-gray-300 rounded"
+      (input)="onSearch($event)" />
+
+    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded" (click)="openModal()">
+      + Agregar nuevo curso
+    </button>
+  </div>
+
+  <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+    <thead class="bg-gray-100">
+    <tr>
+      <th class="p-2 border-b">Nombre del Curso</th>
+      <th class="p-2 border-b">Descripción</th>
+      <th class="p-2 border-b">Duración</th>
+      <th class="p-2 border-b">Objetivos</th>
+      <th class="p-2 border-b">Responsables</th>
+      <th class="p-2 border-b">Fecha de Inicio</th>
+      <th class="p-2 border-b">Fecha de Fin</th>
+      <th class="py-2 px-4 border-b">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of filteredRows">
+      <td class="p-2 border-b">{{ row.nombre }}</td>
+      <td class="p-2 border-b">{{ row.descripcion }}</td>
+      <td class="p-2 border-b">{{ row.duracion }}</td>
+      <td class="p-2 border-b">{{ row.objetivos }}</td>
+      <td class="p-2 border-b">{{ row.responsables }}</td>
+      <td class="p-2 border-b">{{ row.fechaInicio }}</td>
+      <td class="p-2 border-b">{{ row.fechaFin }}</td>
+      <td class="p-2 border-b flex gap-2">
+        <button class="bg-yellow-500 text-white px-2 py-1 rounded" (click)="updateCourses(row)">
+          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+            <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+          </svg>        </button>
+        <button class="bg-red-500 text-white px-2 py-1 rounded" (click)="deleteCourse(row)">
+          <svg class="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+          </svg>        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div [ngClass]="{ 'hidden': !isModalOpen }" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+    <h3 class="text-xl font-bold mb-4">Agregar nuevo curso</h3>
+
+    <form [formGroup]="courseForm" (ngSubmit)="saveCourses()">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="col-span-2">
+          <label class="block mb-2">Nombre del curso</label>
+          <input type="text" formControlName="nombreCurso" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div class="col-span-2">
+          <label class="block mb-2">Descripción</label>
+          <textarea formControlName="descripcion" class="p-2 border border-gray-300 rounded w-full"></textarea>
+        </div>
+        <div>
+          <label class="block mb-2">Duración</label>
+          <input type="text" formControlName="duracion" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div class="col-span-2">
+          <label class="block mb-2">Objetivos</label>
+          <textarea formControlName="objetivos" class="p-2 border border-gray-300 rounded w-full"></textarea>
+        </div>
+        <div>
+          <label class="block mb-2">Responsables</label>
+          <input type="text" formControlName="responsables" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Fecha de inicio</label>
+          <input type="date" formControlName="fechaInicio" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Fecha de fin</label>
+          <input type="date" formControlName="fechaFin" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+      </div>
+      <div class="flex justify-end mt-6">
+        <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

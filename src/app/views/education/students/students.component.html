@@ -8,9 +8,10 @@
       class="p-2 border border-gray-300 rounded"
       (input)="onSearch($event)" />
 
-    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      + Agregar
+    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded" (click)="openModal()">
+      + Agregar nuevo estudiante
     </button>
+
   </div>
   <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
     <thead class="bg-gray-100">
@@ -40,17 +41,87 @@
       <td class="p-2 border-b">{{ row.documentoIdentidad }}</td>
       <td class="p-2 border-b">{{ row.fechaInscripcion}}</td>
       <td class="p-2 border-b">{{ row.fechaNacimiento}}</td>
-      <th class="py-2 px-4 border-b">Acciones</th>
 
       <td class="p-2 border-b flex gap-2">
         <button class="bg-yellow-500 text-white px-2 py-1 rounded" (click)="updateStudent(row)">
-          <img ngSrc="assets/icons/edit.png" alt="Editar" class="w-4 h-4" fill/>
+          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+            <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+          </svg>
+
         </button>
         <button class="bg-red-500 text-white px-2 py-1 rounded" (click)="deleteStudent(row)">
-          <img ngSrc="assets/icons/delete.png" alt="Eliminar" class="w-4 h-4" fill/>
+          <svg class="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+          </svg>
         </button>
+
       </td>
     </tr>
     </tbody>
   </table>
+</div>
+
+
+<div [ngClass]="{ 'hidden': !isModalOpen }" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+    <h3 class="text-xl font-bold mb-4">Agregar nuevo estudiante</h3>
+
+    <form [formGroup]="studentForm" (ngSubmit)="saveStudent()">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block mb-2">Primer Nombre</label>
+          <input type="text" formControlName="primerNombre" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Segundo Nombre</label>
+          <input type="text" formControlName="segundoNombre" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Primer Apellido</label>
+          <input type="text" formControlName="primerApellido" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Segundo Apellido</label>
+          <input type="text" formControlName="segundoApellido" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Dirección</label>
+          <input type="text" formControlName="direccion" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Teléfono</label>
+          <input type="text" formControlName="telefono" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Email</label>
+          <input type="email" formControlName="email" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Información Académica</label>
+          <input type="text" formControlName="informacionAcademica" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Tipo de Documento</label>
+          <input type="text" formControlName="tipoDocumento" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Documento de Identidad</label>
+          <input type="text" formControlName="documentoIdentidad" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Fecha de Inscripción</label>
+          <input type="date" formControlName="fechaInscripcion" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Fecha de Nacimiento</label>
+          <input type="date" formControlName="fechaNacimiento" class="p-2 border border-gray-300 rounded w-full">
+        </div>
+      </div>
+      <div class="flex justify-end mt-6">
+        <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
+      </div>
+    </form>
+  </div>
 </div>

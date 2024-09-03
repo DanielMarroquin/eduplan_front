@@ -1,27 +1,52 @@
 # EduplanFront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.5.
+Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 18.0.5.
 
-## Development server
+## Requisitos Previos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Antes de ejecutar el proyecto, asegúrate de tener instalados los siguientes elementos:
 
-## Code scaffolding
+1. **Node.js**: Debes tener Node.js versión 18 instalado en tu sistema. Puedes descargarlo e instalarlo desde [nodejs.org](https://nodejs.org/).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+2. **Angular CLI**: Angular CLI se instalará automáticamente cuando instales el proyecto, pero si deseas instalarlo globalmente, usa el siguiente comando:
 
-## Build
+    ```bash
+    npm install -g @angular/cli@18
+    ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Instalación del Proyecto
 
-## Running unit tests
+1. **Descargar o Clonar el Proyecto**
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+   Si aún no tienes el proyecto en tu máquina, puedes clonarlo desde el repositorio. Reemplaza `URL_DEL_REPOSITORIO` con la URL del repositorio de tu proyecto:
 
-## Running end-to-end tests
+    ```bash
+    git clone URL_DEL_REPOSITORIO
+    ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+   O si tienes un archivo comprimido, extráelo a una carpeta en tu máquina.
 
-## Further help
+2. **Navegar al Directorio del Proyecto**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+   Abre una terminal o línea de comandos y navega al directorio raíz del proyecto:
+
+    ```bash
+    cd ruta/al/directorio/del/proyecto
+    ```
+
+3. **Instalar las Dependencias**
+
+   Una vez en el directorio del proyecto, instala las dependencias necesarias usando npm (el gestor de paquetes para Node.js):
+
+    ```bash
+    npm install
+    ```
+
+   Este comando leerá el archivo `package.json` en tu proyecto e instalará todas las dependencias necesarias para que el proyecto funcione correctamente.
+
+## Ejecutar el Servidor de Desarrollo
+
+Para iniciar el servidor de desarrollo y ver tu aplicación en un navegador, ejecuta el siguiente comando:
+
+```bash
+ng serve
